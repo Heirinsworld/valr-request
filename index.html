@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine?</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease forwards;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #ec4899;
+    }
+    .buttons button {
+      margin: 10px;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .buttons button:hover {
+      transform: scale(1.1);
+    }
+    .yes { background-color: #ec4899; color: white; }
+    .no { background-color: #fbbf24; color: white; }
 
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cute floating hearts */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ec4899;
+      transform: rotate(-45deg);
+      animation: float 3s infinite;
+    }
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ec4899;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: 10px; top: 0; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { transform: translateY(-200px) rotate(-45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Will you be my Valentine, Johne-lee Brukman? 💖</h1>
+  <div class="buttons">
+    <button class="yes" onclick="sendResponse('Yes')">Yes 💕</button>
+    <button class="no" onclick="sendResponse('No')">No 😢</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  // Initialize EmailJS with your Public Key
+  emailjs.init('XF6atrtCxTuJE7xQd');
+
+  function sendResponse(answer) {
+    alert('She clicked: ' + answer);
+
+    // Send Email via EmailJS
+    emailjs.send('service_y58f26t', 'template_gqixbla', {
+      to_name: 'Heirin',
+      from_name: 'Johne-lee Brukman',
+      message: 'She clicked: ' + answer
+    })
+    .then(function(response) {
+       console.log('SUCCESS!', response.status, response.text);
+    }, function(error) {
+       console.log('FAILED...', error);
+    });
+
+    // Cute background animation on Yes
+    if(answer === 'Yes') {
+      document.body.style.background = 'linear-gradient(135deg, #ff9a9e, #fecfef)';
+      alert('Yay! 💖 She said Yes!');
+    } else {
+      alert('Oh no 😢 Maybe next time!');
+    }
+  }
+
+  // Floating hearts animation
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3000);
+  }, 300);
+</script>
+
+</body>
+  </html>
